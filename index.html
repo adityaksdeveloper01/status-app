@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Vault - Modern</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .masonry-item { break-inside: avoid; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-[#0b0c10] text-gray-100 min-h-screen font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+    <header class="sticky top-0 bg-[#0b0c10]/80 backdrop-blur-xl z-40 border-b border-gray-800/40">
+        <div class="px-4 py-4 flex flex-col gap-4 max-w-7xl mx-auto">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 drop-shadow-sm">
+                    Status<span class="text-white">Vault</span>
+                </h1>
+                
+                <form id="search-form" onsubmit="handleSearch(event)" class="relative w-1/2 sm:w-1/3">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="search-input" placeholder="Search..." 
+                        class="w-full bg-gray-900 border border-gray-800 shadow-inner text-white text-xs rounded-full py-2.5 pl-9 pr-4 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+                </form>
+            </div>
+
+            <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="suggestion-chips">
+                <button onclick="applySuggestion('Indian Nature')" class="chip whitespace-nowrap bg-emerald-500/20 text-emerald-400 px-4 py-1.5 rounded-full text-xs font-semibold border border-emerald-500/30 shadow-sm transition">🍃 Nature</button>
+                <button onclick="applySuggestion('Hindu Devotional')" class="chip whitespace-nowrap bg-gray-900 text-gray-400 px-4 py-1.5 rounded-full text-xs font-medium border border-gray-800 transition hover:bg-gray-800 hover:text-gray-200">🙏 Devotional</button>
+                <button onclick="applySuggestion('Monsoon Rain')" class="chip whitespace-nowrap bg-gray-900 text-gray-400 px-4 py-1.5 rounded-full text-xs font-medium border border-gray-800 transition hover:bg-gray-800 hover:text-gray-200">🌧️ Monsoon</button>
+                <button onclick="applySuggestion('Dark Aesthetic')" class="chip whitespace-nowrap bg-gray-900 text-gray-400 px-4 py-1.5 rounded-full text-xs font-medium border border-gray-800 transition hover:bg-gray-800 hover:text-gray-200">🖤 Dark</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-4 pb-32 max-w-7xl mx-auto">
+        <div id="media-feed" class="columns-2 sm:columns-3 lg:columns-4 gap-4">
+            </div>
+        
+        <div id="scroll-sentinel" class="w-full h-24 flex items-center justify-center mt-4">
+            <i class="ph ph-circle-notch text-3xl animate-spin text-emerald-500 hidden drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" id="loading-spinner"></i>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-6 left-0 right-0 z-40 px-4 pointer-events-none">
+        <div class="max-w-xs mx-auto bg-gray-900/90 backdrop-blur-2xl border border-gray-700/50 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-full flex justify-around items-center p-1.5 pointer-events-auto">
+            
+            <button id="nav-image" onclick="setTab('image')" class="flex flex-col items-center py-2 px-6 rounded-full bg-emerald-500/10 text-emerald-400 transition-all active:scale-95">
+                <i class="ph-fill ph-image text-2xl mb-0.5 drop-shadow-md"></i>
+                <span class="text-[9px] font-bold tracking-wide">Photos</span>
+            </button>
+            
+            <button id="nav-video" onclick="setTab('video')" class="flex flex-col items-center py-2 px-6 rounded-full text-gray-500 hover:text-gray-300 transition-all active:scale-95">
+                <i class="ph ph-video-camera text-2xl mb-0.5"></i>
+                <span class="text-[9px] font-medium tracking-wide">Videos</span>
+            </button>
+
+            <button id="nav-favorites" onclick="setTab('favorites')" class="flex flex-col items-center py-2 px-6 rounded-full text-gray-500 hover:text-red-400 transition-all active:scale-95">
+                <i class="ph ph-heart text-2xl mb-0.5"></i>
+                <span class="text-[9px] font-medium tracking-wide">Favs</span>
+            </button>
+            
+        </div>
+    </nav>
+
+    <div id="media-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl cursor-pointer" onclick="closeModal()"></div>
+        
+        <div class="relative w-full max-w-sm sm:max-w-md bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col max-h-[90vh] z-10 animate-[fadeIn_0.2s_ease-out] border border-gray-800/50">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-50 p-2.5 bg-black/40 text-white rounded-full hover:bg-black/60 transition backdrop-blur-md active:scale-90 border border-white/10">
+                <i class="ph ph-x text-lg"></i>
+            </button>
+
+            <div id="modal-media-container" class="flex-1 overflow-hidden bg-black flex items-center justify-center relative min-h-[50vh]">
+                </div>
+
+            <div id="modal-actions" class="p-5 bg-gray-900 border-t border-gray-800 flex gap-3 justify-center items-center">
+                </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
