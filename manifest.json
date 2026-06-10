@@ -1,10 +1,10 @@
 {
-  "name": "Divine & Nature Status Saver",
-  "short_name": "StatusApp",
-  "description": "Download and share high-quality vertical statuses directly to WhatsApp.",
+  "name": "Status Vault Pro",
+  "short_name": "StatusVault",
+  "description": "Premium 9:16 vertical statuses, wallpapers, and quotes.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#111827",
+  "background_color": "#0b0c10",
   "theme_color": "#10b981",
   "orientation": "portrait",
   "icons": [

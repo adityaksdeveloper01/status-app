@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Vault - Modern</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Status Vault - Pro</title>
     <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -15,7 +15,7 @@
         .masonry-item { break-inside: avoid; margin-bottom: 1rem; }
     </style>
 </head>
-<body class="bg-[#0b0c10] text-gray-100 min-h-screen font-sans antialiased selection:bg-emerald-500 selection:text-white">
+<body class="bg-[#0b0c10] text-gray-100 min-h-[100dvh] font-sans antialiased selection:bg-emerald-500 selection:text-white">
 
     <header class="sticky top-0 bg-[#0b0c10]/80 backdrop-blur-xl z-40 border-b border-gray-800/40">
         <div class="px-4 py-4 flex flex-col gap-4 max-w-7xl mx-auto">
@@ -50,19 +50,24 @@
     </main>
 
     <nav class="fixed bottom-6 left-0 right-0 z-40 px-4 pointer-events-none">
-        <div class="max-w-xs mx-auto bg-gray-900/90 backdrop-blur-2xl border border-gray-700/50 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-full flex justify-around items-center p-1.5 pointer-events-auto">
+        <div class="max-w-md mx-auto bg-gray-900/90 backdrop-blur-2xl border border-gray-700/50 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-full flex justify-around items-center p-1.5 pointer-events-auto">
             
-            <button id="nav-image" onclick="setTab('image')" class="flex flex-col items-center py-2 px-6 rounded-full bg-emerald-500/10 text-emerald-400 transition-all active:scale-95">
+            <button id="nav-image" onclick="setTab('image')" class="flex flex-col items-center py-2 px-4 rounded-full bg-emerald-500/10 text-emerald-400 transition-all active:scale-95">
                 <i class="ph-fill ph-image text-2xl mb-0.5 drop-shadow-md"></i>
                 <span class="text-[9px] font-bold tracking-wide">Photos</span>
             </button>
             
-            <button id="nav-video" onclick="setTab('video')" class="flex flex-col items-center py-2 px-6 rounded-full text-gray-500 hover:text-gray-300 transition-all active:scale-95">
+            <button id="nav-video" onclick="setTab('video')" class="flex flex-col items-center py-2 px-4 rounded-full text-gray-500 hover:text-gray-300 transition-all active:scale-95">
                 <i class="ph ph-video-camera text-2xl mb-0.5"></i>
                 <span class="text-[9px] font-medium tracking-wide">Videos</span>
             </button>
 
-            <button id="nav-favorites" onclick="setTab('favorites')" class="flex flex-col items-center py-2 px-6 rounded-full text-gray-500 hover:text-red-400 transition-all active:scale-95">
+            <button id="nav-status" onclick="setTab('status')" class="flex flex-col items-center py-2 px-4 rounded-full text-gray-500 hover:text-emerald-400 transition-all active:scale-95">
+                <i class="ph ph-text-aa text-2xl mb-0.5"></i>
+                <span class="text-[9px] font-medium tracking-wide">Status</span>
+            </button>
+
+            <button id="nav-favorites" onclick="setTab('favorites')" class="flex flex-col items-center py-2 px-4 rounded-full text-gray-500 hover:text-red-400 transition-all active:scale-95">
                 <i class="ph ph-heart text-2xl mb-0.5"></i>
                 <span class="text-[9px] font-medium tracking-wide">Favs</span>
             </button>
@@ -73,13 +78,13 @@
     <div id="media-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-xl cursor-pointer" onclick="closeModal()"></div>
         
-        <div class="relative w-full max-w-sm sm:max-w-md bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col max-h-[90vh] z-10 animate-[fadeIn_0.2s_ease-out] border border-gray-800/50">
+        <div class="relative w-full max-w-sm sm:max-w-md bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col max-h-[90dvh] z-10 animate-[fadeIn_0.2s_ease-out] border border-gray-800/50">
             
             <button onclick="closeModal()" class="absolute top-4 right-4 z-50 p-2.5 bg-black/40 text-white rounded-full hover:bg-black/60 transition backdrop-blur-md active:scale-90 border border-white/10">
                 <i class="ph ph-x text-lg"></i>
             </button>
 
-            <div id="modal-media-container" class="flex-1 overflow-hidden bg-black flex items-center justify-center relative min-h-[50vh]">
+            <div id="modal-media-container" class="flex-1 overflow-hidden bg-black flex items-center justify-center relative min-h-[50dvh]">
                 </div>
 
             <div id="modal-actions" class="p-5 bg-gray-900 border-t border-gray-800 flex gap-3 justify-center items-center">
